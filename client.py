@@ -19,7 +19,6 @@ rate_limited = 0
 #      pprint("rate limiting on geo_lookups: %s" % str(rate_limited))
 #      time.sleep(0.1 * rate_limited)
 #      return get_country(latitude, longitude)
-# 
 class Crowdscores(object):
    def __init__(self, api_key, base='https://api.crowdscores.com/api/v1/'):
       self.api_key = api_key
@@ -171,6 +170,7 @@ class Crowdscores(object):
    #   
    #   return self.countries 
    #   #return {country : [match for match in matches if match['country'] == country] for country in self.countries}
+
                  
    def _convert_time(self, stamp):
       return datetime.fromtimestamp(int(stamp/1000))
