@@ -29,6 +29,8 @@ class Crowdscores(object):
       self._add_stuff('rounds')
       self._add_stuff('seasons')
       self._add_stuff('football_states') 
+   def help(self):
+      pprint(dir(self))
 
    def base_request(self, endpoint):
       '''Wraps endpoint requests with the authentication and base crowdscores url'''
