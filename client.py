@@ -4,22 +4,22 @@ import time
 import os
 from datetime import date, timedelta
 from pprint import pprint
-from geopy.geocoders import Nominatim
+#from geopy.geocoders import Nominatim
 today = date.today()
 yesterday = today - timedelta(1)
 rate_limited = 0
 
-def get_country(latitude, longitude):
-   global rate_limited
-   geolocator = Nominatim()
-   try:
-      return  geolocator.reverse("{:f}, {:f}".format(latitude, longitude)).address.split(', ')[-1]
-   except:
-      rate_limited +=1
-      pprint("rate limiting on geo_lookups: %s" % str(rate_limited))
-      time.sleep(0.1 * rate_limited)
-      return get_country(latitude, longitude)
- 
+#def get_country(latitude, longitude):
+#   global rate_limited
+#   geolocator = Nominatim()
+#   try:
+#      return  geolocator.reverse("{:f}, {:f}".format(latitude, longitude)).address.split(', ')[-1]
+#   except:
+#      rate_limited +=1
+#      pprint("rate limiting on geo_lookups: %s" % str(rate_limited))
+#      time.sleep(0.1 * rate_limited)
+#      return get_country(latitude, longitude)
+# 
 class Crowdscores(object):
    def __init__(self, api_key, base='https://api.crowdscores.com/api/v1/'):
       self.api_key = api_key
@@ -154,31 +154,27 @@ class Crowdscores(object):
                'full_name' : competition['fullName']}
                for competition in self.stuff['competitions']]
 
-   def list_by_country(self, from_=yesterday, to=today):
-      matches = self.get_matches(from_, to)['response']
-      self.stuff['countries'] = {}
-      for match in matches:
-         if match['venue'] and match['venue']['geolocation']:
-            la = match['venue']['geolocation']['latitude']
-            lo = match['venue']['geolocation']['longitude']
-            match['country'] = self.stuff['co-ord lookup'].get('%s%s' % (la, lo), get_country(la, lo))
-            self.stuff['co-ord lookup']['%s%s' % (la, lo)] = match['country']
-            self.stuff['countries'] = self._dicto_listonify(match['country'], match, self.stuff['countries'])
-         else:
-            match['country'] = None
-      
-      return self.countries 
-      #return {country : [match for match in matches if match['country'] == country] for country in self.countries}
+   #def list_by_country(self, from_=yesterday, to=today):
+   #   matches = self.get_matches(from_, to)['response']
+   #   self.stuff['countries'] = {}
+   #   for match in matches:
+   #      if match['venue'] and match['venue']['geolocation']:
+   #         la = match['venue']['geolocation']['latitude']
+   #         lo = match['venue']['geolocation']['longitude']
+   #         match['country'] = self.stuff['co-ord lookup'].get('%s%s' % (la, lo), get_country(la, lo))
+   #         self.stuff['co-ord lookup']['%s%s' % (la, lo)] = match['country']
+   #         self.stuff['countries'] = self._dicto_listonify(match['country'], match, self.stuff['countries'])
+   #      else:
+   #         match['country'] = None
+   #   
+   #   return self.countries 
+   #   #return {country : [match for match in matches if match['country'] == country] for country in self.countries}
                  
    def _convert_time(self, stamp):
       return datetime.fromtimestamp(int(stamp/1000))
 
 if __name__ == '__main__':
-   try:
-      with open(os.getenv("HOME") + "/.crowdscores", "r") as auth:
-         token = auth.read()
-   except IOError:
-      with open(os.getenv("HOME") + "/.crowdscores", "w+") as auth:
-         token = raw_input("What is your auth token? ") 
-         auth.write(token)
+   with open(os.getenv("HOME") + "/.crowdscores", "r") as auth:
+      token = auth.read()
+   print(token) 
    client = Crowdscores(token)   
