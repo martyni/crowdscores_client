@@ -2,7 +2,7 @@ import requests
 import json
 import time
 import os
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from pprint import pprint
 #from geopy.geocoders import Nominatim
 today = date.today()
@@ -19,7 +19,6 @@ rate_limited = 0
 #      pprint("rate limiting on geo_lookups: %s" % str(rate_limited))
 #      time.sleep(0.1 * rate_limited)
 #      return get_country(latitude, longitude)
-# 
 class Crowdscores(object):
    def __init__(self, api_key, base='https://api.crowdscores.com/api/v1/'):
       self.api_key = api_key
@@ -133,10 +132,14 @@ class Crowdscores(object):
       
    def get_teams(self, round_ids, competition_ids):
        return self._dictionify('teams?round_ids=%s,competition_ids=%s' % (round_ids, competition_ids))
+    
+   def date_handle(self, a_date):
+      '''Formats a date or datetime object correctly'''
+      return a_date.strftime('%Y-%m-%dT%H:%M:%S')
      
    def get_matches(self, from_=yesterday, to=today):
-      from_string = str(yesterday)
-      to_string = str(today)
+      from_string = self.date_handle(from_)
+      to_string = self.date_handle(to)
       return self._dictionify('matches?from=%s&to=%s' % (from_string, to_string))
  
    def list_league_tables(self):
@@ -171,6 +174,7 @@ class Crowdscores(object):
    #   
    #   return self.countries 
    #   #return {country : [match for match in matches if match['country'] == country] for country in self.countries}
+
                  
    def _convert_time(self, stamp):
       return datetime.fromtimestamp(int(stamp/1000))
