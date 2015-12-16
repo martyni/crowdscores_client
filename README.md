@@ -13,7 +13,7 @@ cd crowdscores_client
 
 sudo pip-3.2 -r requirements.txt
 
-echo “YOUR API KEY” > ~./crowdscores
+echo “YOUR API KEY” > ~/.crowdscores
 
 #Test the client is working
 
