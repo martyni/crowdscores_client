@@ -1,4 +1,5 @@
-# crowdscores_client
+<pre>
+#crowdscores_client
 #The display I used can be found here from Farnell
 #http://uk.farnell.com/piface/piface-control-display/i-o-board-with-lcd-display-for/dp/2344458
 
@@ -23,3 +24,4 @@ client.get_matches()
 
 python3 screen.py
 
+</pre>
