@@ -1,0 +1,43 @@
+<html>
+  <head>
+   <link rel="stylesheet" type="text/css" href="mystyle.css">
+   <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  </head>
+ <body style="background-color:#222222;">
+  <div id='header'>
+     <div id='title'>
+      <h1>RASPI vidi Printer 2</h1> 
+     </div>
+    <h2>Welcome</h2>
+  </div>
+  <div id='site'>
+   <p id='content'>This is where the stuff will go</p>
+  </div>
+  <ul></ul>
+  <script>
+$.getJSON( "check_events", function( data ) {
+  var items = [];
+  $.each( data, function( key, val ) {
+    if (key == "No New") {
+       items.push( "<li id='" + key + "'>" + val + "</li>" );
+    } else {
+       items.push( "<li id='" + key + "'>",
+                   "<h2 class='game'>" + val.homeTeam.name + " vs " + val.awayTeam.name + "</h2>",
+                   "<p class='type'>" + val.type + "</p>",
+                   "<p class='time'>" + val.matchTimeString + "</p>",
+                   "<img height='100px' src='" + val.homeTeam.badgeUrl + "'>",
+                   "<img height='100px' src='" + val.awayTeam.badgeUrl +"'></li>");
+    }
+  });
+  $( "<ul/>", {
+    "class": "my-new-list",
+    html: items.join( "" )
+  }).appendTo( "body" );
+});
+  </script>
+  <div id='footer'>
+    <p><a href="mailto:martynjamespratt@gmail.com">Contact</a></p>
+  </div>
+ </body>
+</html>
+
