@@ -158,6 +158,28 @@ class Crowdscores(object):
       return [{'competition_id' : competition['dbid'],
                'full_name' : competition['fullName']}
                for competition in self.stuff['competitions']]
+   
+   def get_events(self):
+      return self._dictionify('events')
+ 
+   def list_events(self, save=True):
+      live_events = self.get_events()["response"][::-1]
+      if save:
+         self.events = live_events
+      return live_events
+   
+   def check_events(self):
+     live_events = self.list_events(save=False)
+     if live_events == self.events:
+        return False
+     else:
+       new_events = []
+       for event in live_events:
+          if event not in self.events:
+             new_events.append(event)
+       self.events = live_events
+       return new_events
+    
 
    #def list_by_country(self, from_=yesterday, to=today):
    #   matches = self.get_matches(from_, to)['response']
